@@ -1,24 +1,39 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import React, { useEffect } from 'react';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Slot, SplashScreen } from 'expo-router';
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import { useFonts } from 'expo-font';
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+import './global.css';
+
+
+SplashScreen.preventAutoHideAsync();
+
+
+const RootLayout = () => {
+
+    const [fontsLoaded, error] = useFonts({
+        'Roboto-Black': require('../assets/fonts/Roboto-Black.ttf'),
+        'Roboto-Light': require('../assets/fonts/Roboto-Light.ttf'),
+        'Roboto-Medium': require('../assets/fonts/Roboto-Medium.ttf')
+    })
+
+
+    useEffect(() => {
+
+        if (error) throw error;
+
+        if (fontsLoaded) SplashScreen.hideAsync();
+
+    }, [fontsLoaded, error])
+
+
+    if (!fontsLoaded && !error) return null;
+
+    return (
+        <Slot />
+    )
 }
+
+export default RootLayout

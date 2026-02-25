@@ -1,0 +1,25 @@
+import { products } from '@/store/products.store';
+import { Redirect, useLocalSearchParams } from 'expo-router';
+import React from 'react';
+import { Text, View } from 'react-native';
+
+const ProductsScreen = () => {
+
+    const { id } = useLocalSearchParams();
+
+    const product = products.find((p) => p.id === id);
+
+    if (!product) {
+        return <Redirect href={'/'} />
+    }
+
+    return (
+        <View className='px-5 mt-2 flex'>
+            <Text className='font-roboto-black text-2xl'>{product.title}</Text>
+            <Text>{product.description}</Text>
+            <Text className='font-roboto-black text-right'>${product.price}</Text>
+        </View>
+    )
+}
+
+export default ProductsScreen
