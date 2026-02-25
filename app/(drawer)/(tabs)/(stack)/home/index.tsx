@@ -1,9 +1,18 @@
 import CustomButton from '@/components/shared/CustomButton'
-import { router } from 'expo-router'
+import { DrawerActions } from '@react-navigation/native'
+import { router, useNavigation } from 'expo-router'
 import React from 'react'
 import { View } from 'react-native'
 
 const HomeScreen = () => {
+
+    const navigation = useNavigation();
+
+    const onToggleDrawer = () => {
+        navigation.dispatch(DrawerActions.toggleDrawer());
+    }
+
+
     return (
         <View className='px-10 mt-5'>
 
@@ -46,6 +55,10 @@ const HomeScreen = () => {
             >
                 Productos
             </CustomButton>
+
+            <CustomButton
+                onPress={onToggleDrawer}
+            >Abrir menú</CustomButton>
 
             {/* <Link className='mb-5' href={'./products'}>Productos</Link>
                 <Link className='mb-5' href={'./profile'}>Perfil</Link>
